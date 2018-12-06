@@ -1,0 +1,9 @@
+.git
+.vscode
+.DS_Store
+.dockerignore
+.editorconfig
+.gitlab-ci.yml
+vendor
+doc
+Dockerfile

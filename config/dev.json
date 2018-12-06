@@ -1,0 +1,12 @@
+{
+  "http": {
+    "port": 3000
+  },
+  "logger": {
+    "level": "debug"
+  },
+  "mongo": {
+    "addrs": ["127.0.0.1:27017"],
+    "database": "requestbin"
+  }
+}

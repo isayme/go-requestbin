@@ -1,2 +1,2 @@
-# go-requestbin
-A requestbin in Golang
+# RequestBin
+A requestbin in Golang.
