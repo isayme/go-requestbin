@@ -5,7 +5,6 @@ RUN apk update && apk add git
 ARG APP_PKG
 WORKDIR /go/src/${APP_PKG}
 
-ENV GIN_MODE=release
 ENV GO111MODULE=on
 
 COPY go.* ./
