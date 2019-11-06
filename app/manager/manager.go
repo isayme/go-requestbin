@@ -7,7 +7,7 @@ import (
 
 // Manager ...
 type Manager struct {
-	Session *mongo.Session
+	Mongo *mongo.Mongo
 }
 
 var globalManager *Manager
@@ -16,11 +16,8 @@ var globalManager *Manager
 func Init(config *conf.Config) {
 	manager := Manager{}
 
-	session, err := mongo.NewSession(&config.Mongo)
-	if err != nil {
-		panic(err)
-	}
-	manager.Session = session
+	mongo := mongo.NewMongo(&config.Mongo)
+	manager.Mongo = mongo
 
 	globalManager = &manager
 }

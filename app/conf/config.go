@@ -24,14 +24,7 @@ type Config struct {
 
 // Mongo mongo config
 type Mongo struct {
-	Addrs          []string `json:"addrs"`
-	Timeout        int      `json:"timeout"` // in seconds
-	Database       string   `json:"database"`
-	ReplicaSetName string   `json:"replicaSet"`
-	Source         string   `json:"source"`
-	PoolLimit      int      `json:"poolLimit"`
-	Username       string   `json:"username"`
-	Password       string   `json:"password"`
+	URI string `json:"uri"`
 }
 
 // SetPath set config file path

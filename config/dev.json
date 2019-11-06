@@ -6,7 +6,6 @@
     "level": "debug"
   },
   "mongo": {
-    "addrs": ["127.0.0.1:27017"],
-    "database": "requestbin"
+    "uri": "mongodb://127.0.0.1:27017/requestbin"
   }
 }

@@ -3,7 +3,7 @@ package schema
 import (
 	"time"
 
-	"github.com/globalsign/mgo/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
 // M object map
@@ -25,8 +25,8 @@ type RequestInfo struct {
 
 // Request request record in db
 type Request struct {
-	ID      bson.ObjectId `json:"_id" bson:"_id"`
-	Slug    string        `json:"slug" bson:"slug"`
-	Request *RequestInfo  `json:"request" bson:"request"`
-	Created time.Time     `json:"created" bson:"created"`
+	ID      primitive.ObjectID `json:"_id" bson:"_id"`
+	Slug    string             `json:"-" bson:"slug"`
+	Request *RequestInfo       `json:"request" bson:"request"`
+	Created time.Time          `json:"created" bson:"created"`
 }

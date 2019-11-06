@@ -2,13 +2,15 @@ package model
 
 import (
 	"context"
+	"time"
 
-	"github.com/globalsign/mgo"
-	"github.com/globalsign/mgo/bson"
 	"github.com/isayme/go-requestbin/app/constant"
 	"github.com/isayme/go-requestbin/app/manager"
-	"github.com/isayme/go-requestbin/app/mongo"
 	"github.com/isayme/go-requestbin/app/schema"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 // Request data model for requestinfo
@@ -19,38 +21,54 @@ func NewRequest() *Request {
 	return &Request{}
 }
 
-func (r *Request) getCollection(ctx context.Context) (*mongo.Session, *mgo.Collection) {
+func (r *Request) getCollection(ctx context.Context) *mongo.Collection {
 	m := manager.Get()
-	s := m.Session.Copy()
-	c := s.GetCollection(constant.CollectionRequest)
-	return s, c
+	c := m.Mongo.GetCollection(constant.CollectionRequest)
+	return c
 }
 
 func (r *Request) List(ctx context.Context, slug string) ([]*schema.Request, error) {
-	s, c := r.getCollection(ctx)
-	defer s.Close()
+	c := r.getCollection(ctx)
+
+	option := &options.FindOptions{}
+	option.SetLimit(100)
+	option.SetSkip(0)
+	option.SetSort(bson.D{
+		bson.E{
+			Key:   "_id",
+			Value: -1,
+		},
+	})
+	cursor, err := c.Find(ctx, bson.M{"slug": slug}, option)
+	if err != nil {
+		return nil, err
+	}
 
 	result := []*schema.Request{}
-	err := c.Find(bson.M{"slug": slug}).Limit(100).Sort("-_id").All(&result)
+	err = cursor.All(ctx, &result)
+	if err != nil {
+		return nil, err
+	}
+
 	return result, err
 }
 
 func (r *Request) Create(ctx context.Context, slug string, info *schema.RequestInfo) (*schema.Request, error) {
-	s, c := r.getCollection(ctx)
-	defer s.Close()
+	c := r.getCollection(ctx)
 
-	now := bson.Now()
+	now := time.Now()
 
 	request := &schema.Request{
 		Request: info,
 	}
 
-	request.ID = bson.NewObjectId()
+	request.ID = primitive.NewObjectID()
 	request.Slug = slug
 
 	request.Created = now
 
-	if err := c.Insert(request); err != nil {
+	_, err := c.InsertOne(ctx, request)
+	if err != nil {
 		return nil, err
 	}
 

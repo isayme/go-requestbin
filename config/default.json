@@ -6,7 +6,6 @@
     "level": "info"
   },
   "mongo": {
-    "addrs": ["mongodb:27017"],
-    "database": "requestbin"
+    "uri": "mongodb://mongodb:27017/requestbin"
   }
 }
