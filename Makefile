@@ -9,7 +9,7 @@ APP_PKG := $(shell echo ${PWD} | sed -e "s\#${GOPATH}/src/\#\#g")
 .PHONY: build
 build:
 	@mkdir -p ./dist
-	go build -ldflags "-X ${APP_PKG}/app.Name=${APP_NAME} -X ${APP_PKG}/app.Version=${APP_VERSION}" -o ./dist/requestbin main.go
+	go build -ldflags "-X ${APP_PKG}/app/util.Name=${APP_NAME} -X ${APP_PKG}/app/util.Version=${APP_VERSION}" -o ./dist/requestbin main.go
 
 .PHONY: image
 image:

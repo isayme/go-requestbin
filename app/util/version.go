@@ -1,7 +1,7 @@
-package app
+package util
 
 // Name service name
-var Name = "unknown"
+var Name = "requestbin"
 
 // Version version
 var Version = "unknown"

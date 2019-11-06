@@ -7,11 +7,11 @@ import (
 
 	"github.com/gin-gonic/gin"
 	logger "github.com/isayme/go-logger"
-	"github.com/isayme/go-requestbin/app"
 	"github.com/isayme/go-requestbin/app/conf"
 	"github.com/isayme/go-requestbin/app/manager"
 	"github.com/isayme/go-requestbin/app/middleware"
 	"github.com/isayme/go-requestbin/app/router"
+	"github.com/isayme/go-requestbin/app/util"
 )
 
 var configPath = flag.String("c", "/etc/requestbin.json", "config file path")
@@ -27,7 +27,7 @@ func main() {
 	}
 
 	if *showVersion {
-		fmt.Printf("%s: %s\n", app.Name, app.Version)
+		fmt.Printf("%s: %s\n", util.Name, util.Version)
 		os.Exit(0)
 	}
 
