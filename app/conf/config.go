@@ -1,47 +1,32 @@
 package conf
 
 import (
-	"encoding/json"
-	"io/ioutil"
-
-	logger "github.com/isayme/go-logger"
+	config "github.com/isayme/go-config"
 )
 
-var config Config
+var globalConfig Config
 
 // Config service config
 type Config struct {
 	HTTP struct {
-		Port int `json:"port"`
-	} `json:"http"`
+		Port int `json:"port" yaml:"port"`
+	} `json:"http" yaml:"http"`
 
 	Logger struct {
-		Level string `json:"level"`
-	} `json:"logger"`
+		Level string `json:"level" yaml:"level"`
+	} `json:"logger" yaml:"logger"`
 
-	Mongo Mongo `json:"mongo"`
+	Mongo Mongo `json:"mongo" yaml:"mongo"`
 }
 
 // Mongo mongo config
 type Mongo struct {
-	URI string `json:"uri"`
-}
-
-// SetPath set config file path
-func SetPath(path string) {
-	logger.Debugf("config file path: %s", path)
-
-	data, err := ioutil.ReadFile(path)
-	if err != nil {
-		panic(err)
-	}
-
-	if err := json.Unmarshal(data, &config); err != nil {
-		panic(err)
-	}
+	URI string `json:"uri" yaml:"uri"`
 }
 
 // Get get config
 func Get() *Config {
-	return &config
+	config.Parse(&globalConfig)
+
+	return &globalConfig
 }

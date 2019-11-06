@@ -5,8 +5,8 @@ import (
 	"time"
 
 	"github.com/isayme/go-requestbin/app/constant"
-	"github.com/isayme/go-requestbin/app/manager"
 	"github.com/isayme/go-requestbin/app/schema"
+	"github.com/isayme/go-requestbin/app/service"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -15,15 +15,17 @@ import (
 
 // Request data model for requestinfo
 type Request struct {
+	mongo *service.Mongo
 }
 
-func NewRequest() *Request {
-	return &Request{}
+func NewRequest(mongo *service.Mongo) *Request {
+	return &Request{
+		mongo: mongo,
+	}
 }
 
 func (r *Request) getCollection(ctx context.Context) *mongo.Collection {
-	m := manager.Get()
-	c := m.Mongo.GetCollection(constant.CollectionRequest)
+	c := r.mongo.GetCollection(constant.CollectionRequest)
 	return c
 }
 

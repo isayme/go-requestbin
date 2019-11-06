@@ -1,6 +1,6 @@
 .PHONY: dev
 dev:
-	go run main.go -c ./config/dev.json
+	CONF_FILE_PATH=./config/dev.yaml go run main.go
 
 APP_NAME := requestbin
 APP_VERSION := $(shell git describe --tags --always || git rev-parse HEAD)

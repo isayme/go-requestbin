@@ -14,10 +14,18 @@ import (
 	"github.com/isayme/go-requestbin/app/schema"
 )
 
-var globalRequest = &model.Request{}
+type Request struct {
+	model *model.Request
+}
+
+func NewRequest(model *model.Request) *Request {
+	return &Request{
+		model: model,
+	}
+}
 
 // RecordRequest record a request
-func RecordRequest(c *gin.Context) {
+func (r *Request) RecordRequest(c *gin.Context) {
 	request := c.Request
 
 	contentLength, _ := strconv.Atoi(c.GetHeader(constant.HeaderContentLength))
@@ -73,12 +81,12 @@ func RecordRequest(c *gin.Context) {
 
 	slug := c.Param("slug")
 
-	r, err := globalRequest.Create(c, slug, requestInfo)
+	result, err := r.model.Create(c, slug, requestInfo)
 	if err != nil {
 		panic(err)
 	}
 
-	c.JSON(http.StatusOK, r)
+	c.JSON(http.StatusOK, result)
 }
 
 // ListResponse list latest requests response
@@ -87,10 +95,10 @@ type ListResponse struct {
 }
 
 // ListRequests list requests
-func ListRequests(c *gin.Context) {
+func (r *Request) ListRequests(c *gin.Context) {
 	slug := c.Param("slug")
 
-	requests, err := globalRequest.List(c, slug)
+	requests, err := r.model.List(c, slug)
 	if err != nil {
 		panic(err)
 	}

@@ -1,4 +1,4 @@
-package mongo
+package service
 
 import (
 	"context"
@@ -19,7 +19,8 @@ type Mongo struct {
 }
 
 // NewMongo new mongo session
-func NewMongo(config *conf.Mongo) *Mongo {
+func NewMongo(conf *conf.Config) *Mongo {
+	config := conf.Mongo
 	logger.Debugw("mongodb", "uri", config.URI)
 
 	timeout := time.Second * 5
@@ -49,6 +50,7 @@ func NewMongo(config *conf.Mongo) *Mongo {
 	}
 }
 
+// GetCollection get collection
 func (m *Mongo) GetCollection(name string) *mongo.Collection {
 	return m.client.Database(m.database).Collection(name)
 }

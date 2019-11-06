@@ -6,15 +6,14 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
+	gdig "github.com/isayme/go-gdig"
 	logger "github.com/isayme/go-logger"
 	"github.com/isayme/go-requestbin/app/conf"
-	"github.com/isayme/go-requestbin/app/manager"
 	"github.com/isayme/go-requestbin/app/middleware"
 	"github.com/isayme/go-requestbin/app/router"
 	"github.com/isayme/go-requestbin/app/util"
 )
 
-var configPath = flag.String("c", "/etc/requestbin.json", "config file path")
 var showVersion = flag.Bool("v", false, "show version")
 var showHelp = flag.Bool("h", false, "show help")
 
@@ -31,20 +30,24 @@ func main() {
 		os.Exit(0)
 	}
 
-	conf.SetPath(*configPath)
 	config := conf.Get()
 
 	if config.Logger.Level != "" {
 		logger.SetLevel(config.Logger.Level)
 	}
 
-	manager.Init(config)
-
 	r := gin.New()
 	r.Use(middleware.Logger)
 	r.Use(gin.Recovery())
 
-	r.Any("/:slug", router.RecordRequest)
-	r.GET("/:slug/inspect", router.ListRequests)
+	err := gdig.Invoke(func(request *router.Request) error {
+		r.Any("/:slug", request.RecordRequest)
+		r.GET("/:slug/inspect", request.ListRequests)
+		return nil
+	})
+	if err != nil {
+		panic(err)
+	}
+
 	r.Run(fmt.Sprintf(":%d", config.HTTP.Port))
 }
