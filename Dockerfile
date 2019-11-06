@@ -1,7 +1,7 @@
 FROM alpine
 WORKDIR /app
 
-COPY ./config/default.json /etc/requestbin.json
+COPY ./config/default.yaml /etc/requestbin.yaml
 
 COPY ./dist/requestbin /app/requestbin
 

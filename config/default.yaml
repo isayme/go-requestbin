@@ -1,0 +1,6 @@
+http: 
+  port: 3000
+logger: 
+  level: info
+mongo: 
+  uri: mongodb://mongodb:27017/requestbin
