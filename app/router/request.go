@@ -103,7 +103,13 @@ func (r *Request) ListRequests(c *gin.Context) {
 		panic(err)
 	}
 
-	c.JSON(http.StatusOK, ListResponse{
-		Result: requests,
-	})
+	if _, ok := c.GetQuery("pretty"); ok {
+		c.IndentedJSON(http.StatusOK, ListResponse{
+			Result: requests,
+		})
+	} else {
+		c.JSON(http.StatusOK, ListResponse{
+			Result: requests,
+		})
+	}
 }
