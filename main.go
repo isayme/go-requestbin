@@ -3,6 +3,7 @@ package main
 import (
 	"flag"
 	"fmt"
+	"net/http"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -41,7 +42,16 @@ func main() {
 	r.Use(gin.Recovery())
 
 	err := gdig.Invoke(func(request *router.Request) error {
-		r.Any("/:slug", request.RecordRequest)
+		r.Any("/:slug", func(c *gin.Context) {
+			if slug := c.Param("slug"); slug == "version" {
+				c.JSON(http.StatusOK, map[string]interface{}{
+					"name":    util.Name,
+					"version": util.Version,
+				})
+			} else {
+				request.RecordRequest(c)
+			}
+		})
 		r.GET("/:slug/inspect", request.ListRequests)
 		return nil
 	})
@@ -49,5 +59,7 @@ func main() {
 		panic(err)
 	}
 
-	r.Run(fmt.Sprintf(":%d", config.HTTP.Port))
+	addr := fmt.Sprintf(":%d", config.HTTP.Port)
+	logger.Debugf("listen %s ...", addr)
+	r.Run(addr)
 }
