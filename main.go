@@ -60,6 +60,6 @@ func main() {
 	}
 
 	addr := fmt.Sprintf(":%d", config.HTTP.Port)
-	logger.Debugf("listen %s ...", addr)
+	logger.Infof("listen %s ...", addr)
 	r.Run(addr)
 }
