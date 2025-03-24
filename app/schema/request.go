@@ -14,7 +14,7 @@ type RequestInfo struct {
 	Method        string `json:"method" bson:"method"`
 	Path          string `json:"path" bson:"path"`
 	ContentType   string `json:"contentType,omitempty" bson:"contentType"`
-	ContentLength int    `json:"contentLength,omitempty" bson:"contentLength"`
+	ContentLength int64  `json:"contentLength,omitempty" bson:"contentLength"`
 	IP            string `json:"ip" bson:"ip"`
 	Headers       M      `json:"headers" bson:"headers"`
 	Query         M      `json:"query,omitempty" bson:"query"`

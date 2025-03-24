@@ -6,36 +6,43 @@ import (
 	"mime"
 	"net/http"
 	"net/url"
-	"strconv"
 
-	"github.com/gin-gonic/gin"
+	"github.com/gorilla/mux"
 	"github.com/isayme/go-requestbin/app/constant"
 	"github.com/isayme/go-requestbin/app/model"
 	"github.com/isayme/go-requestbin/app/schema"
+	"github.com/r3labs/sse/v2"
 )
 
 type Request struct {
-	model *model.Request
+	model     *model.Request
+	sseServer *sse.Server
 }
 
-func NewRequest(model *model.Request) *Request {
+func NewRequest(model *model.Request, sseServer *sse.Server) *Request {
 	return &Request{
-		model: model,
+		model:     model,
+		sseServer: sseServer,
 	}
 }
 
 // RecordRequest record a request
-func (r *Request) RecordRequest(c *gin.Context) {
-	request := c.Request
+func (req *Request) RecordRequest(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	request := r
+	reqHeaders := r.Header
 
-	contentLength, _ := strconv.Atoi(c.GetHeader(constant.HeaderContentLength))
+	vars := mux.Vars(r)
+	slug := vars["slug"]
+
+	// contentLength, _ := strconv.Atoi(reqHeaders.Get(constant.HeaderContentLength))
 
 	requestInfo := &schema.RequestInfo{
 		Method:        request.Method,
 		Path:          request.RequestURI,
-		IP:            c.ClientIP(),
-		ContentType:   c.ContentType(),
-		ContentLength: contentLength,
+		IP:            r.RemoteAddr,
+		ContentType:   reqHeaders.Get("content-type"),
+		ContentLength: r.ContentLength,
 	}
 
 	// header
@@ -79,14 +86,22 @@ func (r *Request) RecordRequest(c *gin.Context) {
 		requestInfo.Form = form
 	}
 
-	slug := c.Param("slug")
-
-	result, err := r.model.Create(c, slug, requestInfo)
+	record, err := req.model.Create(ctx, slug, requestInfo)
 	if err != nil {
 		panic(err)
 	}
 
-	c.JSON(http.StatusOK, result)
+	data, err := json.Marshal(record)
+	if err != nil {
+		panic(err)
+	}
+
+	req.sseServer.Publish("requests", &sse.Event{
+		ID:   []byte(record.ID.Hex()),
+		Data: data,
+	})
+
+	w.Write([]byte("ok"))
 }
 
 // ListResponse list latest requests response
@@ -95,21 +110,29 @@ type ListResponse struct {
 }
 
 // ListRequests list requests
-func (r *Request) ListRequests(c *gin.Context) {
-	slug := c.Param("slug")
+func (req *Request) ListRequests(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	vars := mux.Vars(r)
 
-	requests, err := r.model.List(c, slug)
+	slug := vars["slug"]
+
+	requests, err := req.model.List(ctx, slug)
 	if err != nil {
 		panic(err)
 	}
 
-	if _, ok := c.GetQuery("pretty"); ok {
-		c.IndentedJSON(http.StatusOK, ListResponse{
+	if r.URL.Query().Has("pretty") {
+		writeJson(w, ListResponse{
 			Result: requests,
 		})
 	} else {
-		c.JSON(http.StatusOK, ListResponse{
+		writeJson(w, ListResponse{
 			Result: requests,
 		})
 	}
+}
+
+func writeJson(w http.ResponseWriter, v interface{}) {
+	data, _ := json.Marshal(v)
+	w.Write(data)
 }

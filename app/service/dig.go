@@ -7,6 +7,7 @@ import (
 func init() {
 	constructors := []interface{}{
 		NewMongo,
+		NewSseServer,
 	}
 
 	for _, constructor := range constructors {
