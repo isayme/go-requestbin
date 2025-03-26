@@ -19,7 +19,7 @@ interface Request {
 function Inspect() {
   const { slug } = useParams()
 
-  const slugUrl = `${location.protocol}://${location.host}/${slug}`
+  const slugUrl = `${location.protocol}//${location.host}/${slug}`
 
   const [showToast, setShowToast] = useState(false)
 

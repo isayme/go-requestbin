@@ -7,7 +7,8 @@ import (
 func NewSseServer() *sse.Server {
 	server := sse.New()       // create SSE broadcaster server
 	server.AutoReplay = false // do not replay messages for each new subscriber that connects
-	_ = server.CreateStream("requests")
+	server.AutoStream = true
+	// _ = server.CreateStream("requests")
 
 	return server
 }
