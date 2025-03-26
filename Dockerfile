@@ -4,7 +4,7 @@ WORKDIR /app
 RUN apk update && apk add --no-cache make
 
 COPY . .
-RUN mkdir -p ./dist && GO111MODULE=on GOPROXY=https://goproxy.cn,direct go mod download
+RUN mkdir -p ./dist && GO111MODULE=on go mod download
 RUN make build
 # RUN go build -o ./dist/requestbin main.go
 
