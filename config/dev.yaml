@@ -3,4 +3,4 @@ http:
 logger:
   level: debug
 mongo:
-  uri: mongodb://127.0.0.1:27017/requestbin
+  uri: mongodb://192.168.68.152:27017/requestbin

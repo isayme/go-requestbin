@@ -1,4 +1,4 @@
-import { Clock, Copy, RefreshCw } from 'lucide-react'
+import { Clock, Copy } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { useParams } from 'react-router'
 import './App.css'
@@ -11,14 +11,17 @@ interface Request {
   path: string
   headers: object
   timestamp: string
-  body: string
+  form: object
+  body: object
   data: string
 }
 
 function Inspect() {
   const { slug } = useParams()
 
-  const slugUrl = `${location.protocol}://${location.host}/slug`
+  const slugUrl = `${location.protocol}://${location.host}/${slug}`
+
+  const [showToast, setShowToast] = useState(false)
 
   const [requests, setRequests] = useState<Request[]>([])
 
@@ -72,6 +75,8 @@ function Inspect() {
 
   const copyUrl = () => {
     navigator.clipboard.writeText(slugUrl)
+    setShowToast(true)
+    setTimeout(() => setShowToast(false), 3000)
   }
 
   const getMethodColor = (method) => {
@@ -86,6 +91,30 @@ function Inspect() {
 
   return (
     <div className='min-h-screen bg-gray-50'>
+      {/* Toast Notification */}
+      <div
+        className={`fixed top-4 right-4 transform transition-all duration-300 ${
+          showToast
+            ? 'translate-y-0 opacity-100'
+            : '-translate-y-4 opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className='bg-gray-800 text-white px-4 py-2 rounded-lg shadow-lg flex items-center'>
+          <svg
+            className='w-5 h-5 mr-2 text-green-400'
+            fill='none'
+            strokeLinecap='round'
+            strokeLinejoin='round'
+            strokeWidth='2'
+            viewBox='0 0 24 24'
+            stroke='currentColor'
+          >
+            <path d='M5 13l4 4L19 7'></path>
+          </svg>
+          URL copied to clipboard!
+        </div>
+      </div>
+
       <Header />
 
       <main className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8'>
@@ -118,9 +147,6 @@ function Inspect() {
             <h2 className='text-lg font-medium text-gray-900'>
               Recent Requests
             </h2>
-            <button className='text-gray-400 hover:text-gray-500'>
-              <RefreshCw className='h-5 w-5' />
-            </button>
           </div>
           <div className='divide-y divide-gray-200'>
             {requests.map((request) => (
@@ -142,7 +168,7 @@ function Inspect() {
                         {request.path}
                       </span>
                     </div>
-                    <span className='flex items-center text-sm text-gray-500'>
+                    <span className='flex items-center text-sm text-gray-500 pr-3'>
                       <Clock className='h-4 w-4 mr-1' />
                       {new Date(request.timestamp).toLocaleString()}
                     </span>
@@ -166,7 +192,7 @@ function Inspect() {
                                 <span className='w-1/3 font-mono text-sm text-gray-600'>
                                   {key}
                                 </span>
-                                <span className='w-2/3 font-mono text-sm text-balance text-gray-900'>
+                                <span className='w-2/3 font-mono text-sm text-balance text-gray-900 break-all'>
                                   {value}
                                 </span>
                               </div>
@@ -176,7 +202,29 @@ function Inspect() {
                       </div>
                     </div>
 
-                    {request.data && (
+                    {request.form && (
+                      <div>
+                        <h3 className='text-sm font-medium text-gray-500 mb-2'>
+                          Form Body
+                        </h3>
+                        <div className='bg-gray-50 rounded-md p-4 overflow-x-auto font-mono text-sm'>
+                          {JSON.stringify(request.form, null, 2)}
+                        </div>
+                      </div>
+                    )}
+
+                    {request.body && (
+                      <div>
+                        <h3 className='text-sm font-medium text-gray-500 mb-2'>
+                          JSON Body
+                        </h3>
+                        <div className='bg-gray-50 rounded-md p-4 overflow-x-auto font-mono text-sm'>
+                          {JSON.stringify(request.body, null, 2)}
+                        </div>
+                      </div>
+                    )}
+
+                    {!request.form && !request.body && request.data && (
                       <div>
                         <h3 className='text-sm font-medium text-gray-500 mb-2'>
                           Raw Body
@@ -184,6 +232,14 @@ function Inspect() {
                         <div className='bg-gray-50 rounded-md p-4 overflow-x-auto font-mono text-sm'>
                           {request.data}
                         </div>
+                      </div>
+                    )}
+
+                    {!request.data && (
+                      <div>
+                        <h3 className='text-sm font-medium text-gray-500 mb-2'>
+                          No Body
+                        </h3>
                       </div>
                     )}
                   </div>

@@ -27,12 +27,6 @@ func main() {
 
 	err := gdig.Invoke(func(request *router.Request, sseServer *sse.Server) error {
 		r.HandleFunc("/api/sse", func(w http.ResponseWriter, r *http.Request) {
-			logger.Infof("The client is connected: %v\n", r.RemoteAddr)
-			go func() {
-				<-r.Context().Done() // Received Browser Disconnection
-				logger.Infof("The client is disconnected: %v\n", r.RemoteAddr)
-			}()
-
 			sseServer.ServeHTTP(w, r)
 		})
 
@@ -46,16 +40,16 @@ func main() {
 		panic(err)
 	}
 
-	// spa := spaHandler{staticPath: "public", indexPath: "index.html"}
-	// r.PathPrefix("/").Handler(spa)
+	spa := spaHandler{staticPath: "public", indexPath: "index.html"}
+	r.PathPrefix("/").Handler(spa)
 
-	{
-		webProxy, err := newWebProxy("http://127.0.0.1:5173")
-		if err != nil {
-			panic(err)
-		}
-		r.PathPrefix("/").Handler(webProxy)
-	}
+	// {
+	// 	webProxy, err := newWebProxy("http://127.0.0.1:5173")
+	// 	if err != nil {
+	// 		panic(err)
+	// 	}
+	// 	r.PathPrefix("/").Handler(webProxy)
+	// }
 
 	addr := fmt.Sprintf(":%d", config.HTTP.Port)
 	logger.Debugf("listen %s ...", addr)
