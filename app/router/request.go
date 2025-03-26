@@ -96,7 +96,7 @@ func (req *Request) RecordRequest(w http.ResponseWriter, r *http.Request) {
 		panic(err)
 	}
 
-	req.sseServer.Publish("requests", &sse.Event{
+	req.sseServer.Publish(slug, &sse.Event{
 		ID:   []byte(record.ID.Hex()),
 		Data: data,
 	})

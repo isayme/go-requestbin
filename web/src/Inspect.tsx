@@ -45,7 +45,7 @@ function Inspect() {
   }, [])
 
   useEffect(() => {
-    const sse = new EventSource('/api/sse?stream=requests', {
+    const sse = new EventSource(`/api/sse?stream=${slug}`, {
       withCredentials: true,
     })
 
