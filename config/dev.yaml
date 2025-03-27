@@ -1,3 +1,5 @@
+dev: true
+
 http:
   port: 3000
 logger:

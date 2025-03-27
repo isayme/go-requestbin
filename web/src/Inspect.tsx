@@ -4,6 +4,7 @@ import { useParams } from 'react-router'
 import './App.css'
 import Footer from './components/Footer'
 import Header from './components/Header'
+import { appName } from './global'
 
 interface Request {
   id: string
@@ -18,6 +19,10 @@ interface Request {
 
 function Inspect() {
   const { slug } = useParams()
+
+  useEffect(() => {
+    document.title = `${appName} | ${slug}`
+  })
 
   const slugUrl = `${location.protocol}//${location.host}/${slug}`
 
@@ -131,7 +136,7 @@ function Inspect() {
                 </code>
                 <button
                   onClick={copyUrl}
-                  className='ml-3 inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500'
+                  className='ml-3 inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50'
                 >
                   <Copy className='h-4 w-4 mr-1' />
                   Copy

@@ -8,6 +8,8 @@ var globalConfig Config
 
 // Config service config
 type Config struct {
+	Dev bool `json:"dev" yaml:"dev"`
+
 	HTTP struct {
 		Port int `json:"port" yaml:"port"`
 	} `json:"http" yaml:"http"`

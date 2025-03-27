@@ -17,7 +17,7 @@ export default function Header() {
               <Inbox className='h-8 w-8 text-indigo-600' />
               <h1
                 onClick={handleGoHome}
-                className='ml-2 text-2xl font-bold text-gray-900'
+                className='ml-2 text-2xl font-bold text-gray-900 cursor-pointer'
               >
                 RequestBin
               </h1>

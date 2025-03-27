@@ -40,16 +40,16 @@ func main() {
 		panic(err)
 	}
 
-	spa := spaHandler{staticPath: "public", indexPath: "index.html"}
-	r.PathPrefix("/").Handler(spa)
-
-	// {
-	// 	webProxy, err := newWebProxy("http://127.0.0.1:5173")
-	// 	if err != nil {
-	// 		panic(err)
-	// 	}
-	// 	r.PathPrefix("/").Handler(webProxy)
-	// }
+	if config.Dev {
+		webProxy, err := newWebProxy("http://127.0.0.1:5173")
+		if err != nil {
+			panic(err)
+		}
+		r.PathPrefix("/").Handler(webProxy)
+	} else {
+		spa := spaHandler{staticPath: "public", indexPath: "index.html"}
+		r.PathPrefix("/").Handler(spa)
+	}
 
 	addr := fmt.Sprintf(":%d", config.HTTP.Port)
 	logger.Debugf("listen %s ...", addr)
