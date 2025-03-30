@@ -39,3 +39,15 @@ services:
       - /path/to/config.yaml:/etc/requestbin.yaml
     restart: unless-stopped
 ```
+
+## limit
+
+1. show up to 100 requests, others will not reture;
+
+## mongodb
+
+create index with `expireAfterSeconds` option to auto delete saved requests.
+
+```
+db.requests.createIndex({ created: 1 }, { expireAfterSeconds: 86400 })
+```
