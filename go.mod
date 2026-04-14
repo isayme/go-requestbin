@@ -9,7 +9,7 @@ require (
 	github.com/golang/snappy v0.0.1 // indirect
 	github.com/google/go-cmp v0.3.1 // indirect
 	github.com/gorilla/mux v1.8.1
-	github.com/isayme/go-config v0.0.0-20190209132515-066212c0ce1b
+	github.com/isayme/go-config v0.3.0
 	github.com/isayme/go-gdig v0.0.0-20191106141449-8cbe81759c52
 	github.com/isayme/go-logger v0.0.0-20181206095945-ec2b689320b9
 	github.com/json-iterator/go v1.1.5 // indirect
@@ -30,6 +30,7 @@ require (
 	gopkg.in/check.v1 v1.0.0-20180628173108-788fd7840127 // indirect
 	gopkg.in/go-playground/assert.v1 v1.2.1 // indirect
 	gopkg.in/go-playground/validator.v8 v8.18.2 // indirect
+	gopkg.in/yaml.v2 v2.2.2 // indirect
 )
 
 go 1.13
