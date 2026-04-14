@@ -42,11 +42,11 @@ services:
 
 ## limit
 
-1. show up to 100 requests, others will not reture;
+1. show up to 100 requests, others will not return;
 
 ## mongodb
 
-create index with `expireAfterSeconds` option to auto delete saved requests.
+create index with `expireAfterSeconds` option to auto delete expired requests.
 
 ```
 db.requests.createIndex({ created: 1 }, { expireAfterSeconds: 86400 })
