@@ -12,8 +12,8 @@ importers:
         specifier: ^4.3.0
         version: 4.3.0(vite@8.2.1(jiti@2.7.0))
       lucide-react:
-        specifier: ^1.31.0
-        version: 1.31.0(react@19.2.5)
+        specifier: ^1.32.0
+        version: 1.32.0(react@19.2.5)
       nanoid:
         specifier: ^6.0.1
         version: 6.0.1
@@ -52,8 +52,8 @@ importers:
         specifier: ^0.5.2
         version: 0.5.2(eslint@10.8.0(jiti@2.7.0))
       globals:
-        specifier: ^17.10.0
-        version: 17.10.0
+        specifier: ^17.11.0
+        version: 17.11.0
       typescript:
         specifier: ~6.0.2
         version: 6.0.2
@@ -753,8 +753,8 @@ packages:
     resolution: {integrity: sha512-XxwI8EOhVQgWp6iDL+3b0r86f4d6AX6zSU55HfB4ydCEuXLXc5FcYeOu+nnGftS4TEju/11rt4KJPTMgbfmv4A==}
     engines: {node: '>=10.13.0'}
 
-  globals@17.10.0:
-    resolution: {integrity: sha512-V0kztuWST2k8A/VbxAY8+L+7+Rgo3fyA24IHRLrZp7HOzJjV0gHSaZUjK9lpP/IrBSNite2tZ1prhRkinRu1CA==}
+  globals@17.11.0:
+    resolution: {integrity: sha512-Z2I8hM+PbJDXQDq3Icgpzv+mPdwr68iZUU9d5WW4FuXfDUQfkZaZuvjMv42/5crNyw154+9+VWXbYrUgDXbxNw==}
     engines: {node: '>=18'}
 
   graceful-fs@4.2.11:
@@ -977,8 +977,8 @@ packages:
   lru-cache@5.1.1:
     resolution: {integrity: sha512-KpNARQA3Iwv+jTA0utUVVbrh+Jlrr1Fv0e56GGzAFOXN7dk/FviaDW8LHmK52DlcH4WP2n6gI8vN1aesBFgo9w==}
 
-  lucide-react@1.31.0:
-    resolution: {integrity: sha512-G8u2eEtoHUnUa9f8lbvqDhCiORMnYLdUEo06EEG9MQvHQrInKcX3Pa2TH39MM5qyzRcWETxB0+aOwAPI1g1kEg==}
+  lucide-react@1.32.0:
+    resolution: {integrity: sha512-txX56hMFnRxPi1f9/nH69YN8uvAO6a7Y1KSWKjCDAtdD9+soEgmWuCt6iRm1pkxUZo2+YntSdsE1L6bIuKoY8Q==}
     peerDependencies:
       react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
 
@@ -1843,7 +1843,7 @@ snapshots:
     dependencies:
       is-glob: 4.0.3
 
-  globals@17.10.0: {}
+  globals@17.11.0: {}
 
   graceful-fs@4.2.11: {}
 
@@ -1996,7 +1996,7 @@ snapshots:
     dependencies:
       yallist: 3.1.1
 
-  lucide-react@1.31.0(react@19.2.5):
+  lucide-react@1.32.0(react@19.2.5):
     dependencies:
       react: 19.2.5
 
